@@ -58,10 +58,10 @@ async def test_get_resumes(client):
 @pytest.mark.asyncio
 async def test_apply(client):
     respx.post(f"{BASE_URL}/negotiations").mock(
-        return_value=httpx.Response(201, json={})
+        return_value=httpx.Response(201)
     )
     result = await client.apply("123", "abc", "I want this job")
-    assert result == {}
+    assert result == {"status": "ok"}
 
 
 @respx.mock

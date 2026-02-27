@@ -201,10 +201,16 @@ async def apply_to_vacancy(vacancy_id: str, resume_id: str, message: str) -> dic
             "apply_url": v.get("apply_alternate_url"),
         }
 
-    if v.get("has_test"):
+    if v.get("has_test") and v.get("test", {}).get("required"):
         return {
             "success": False,
             "error": "This vacancy requires a test that must be completed on hh.ru website.",
+        }
+
+    if v.get("response_letter_required") and not message.strip():
+        return {
+            "success": False,
+            "error": "This vacancy requires a cover letter. Please provide a message.",
         }
 
     await _get_client().apply(vacancy_id, resume_id, message)

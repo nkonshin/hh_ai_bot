@@ -6,7 +6,7 @@ BASE_URL = "https://api.hh.ru"
 USER_AGENT = "HH-MCP-Server/1.0"
 
 # Default path where hh-applicant-tool stores its config
-HH_TOOL_CONFIG = Path.home() / ".config" / "hh-applicant-tool" / "config" / "config.json"
+HH_TOOL_CONFIG = Path.home() / ".config" / "hh-applicant-tool" / "config.json"
 
 
 def get_access_token() -> str:
@@ -27,7 +27,7 @@ def get_access_token() -> str:
     if config_path.exists():
         with open(config_path) as f:
             data = json.load(f)
-        token = data.get("access_token")
+        token = data.get("token", {}).get("access_token") or data.get("access_token")
         if token:
             return token
 

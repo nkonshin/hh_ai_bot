@@ -28,6 +28,8 @@ class HHClient:
         if response.status_code == 429:
             raise RuntimeError("hh.ru rate limit exceeded. Try again later.")
         response.raise_for_status()
+        if response.status_code == 201:
+            return {"status": "ok"}
         return response.json()
 
     async def get_resumes(self) -> dict:
@@ -46,7 +48,7 @@ class HHClient:
         return await self._request(
             "POST",
             "/negotiations",
-            json={
+            data={
                 "vacancy_id": vacancy_id,
                 "resume_id": resume_id,
                 "message": message,
